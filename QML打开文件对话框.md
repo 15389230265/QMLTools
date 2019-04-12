@@ -513,3 +513,169 @@ MyDocument {
 
 **See also** [nameFilters](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-filedialog.html#nameFilters-prop).
 
+
+
+
+
+------
+
+# FolderDialog QML Type
+
+
+
+本机文件夹对话框。 [More...](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#details)
+
+| Import Statement: | import Qt.labs.platform 1.0                                  |
+| ----------------- | ------------------------------------------------------------ |
+| Since:            | Qt 5.8                                                       |
+| Inherits:         | [Dialog](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-dialog.html) |
+
+- [List of all members, including inherited members](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog-members.html)
+
+
+
+
+
+## Properties
+
+- **acceptLabel** : string
+- **currentFolder** : url
+- **folder** : url
+- **options** : flags
+- **rejectLabel** : string
+
+
+
+
+
+## Detailed Description
+
+该[FolderDialog](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html)类型提供了原生的平台文件夹对话框一个QML API。
+
+![img](QML打开文件对话框.assets/qtlabsplatform-folderdialog-gtk.png)
+
+要显示文件夹对话框，请构造[FolderDialog](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html)的实例，设置所需的属性，然后调用[open()](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-dialog.html#open-method)。该[currentFolder](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#currentFolder-prop)属性可以用来确定在对话框中当前选定的文件夹中。该[文件夹](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#folder-prop)最后的选择已经通过接受对话仅取得后属性更新。
+
+```c++
+MenuItem {
+    text: "Open..."
+    onTriggered: folderDialog.open()
+}
+
+FolderDialog {
+    id: folderDialog
+    currentFolder: viewer.folder
+    folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+}
+
+MyViewer {
+    id: viewer
+    folder: folderDialog.folder
+}
+```
+
+
+
+
+
+### Availability
+
+目前，以下平台上提供了本机平台文件夹对话框：
+
+- iOS
+- Linux (when running with the GTK+ platform theme)
+- macOS
+- Windows
+- [WinRT](https://doc.qt.io/qt-5.9/build-sources.html#winrt)
+
+Qt实验室平台模块使用Qt Widgets作为没有可用本机实现的平台的后备。因此，使用Qt Labs Platform模块中的类型的应用程序应链接到[QtWidgets](https://doc.qt.io/qt-5.9/qtwidgets-module.html)并使用[QApplication](https://doc.qt.io/qt-5.9/qapplication.html)而不是[QGuiApplication](https://doc.qt.io/qt-5.9/qguiapplication.html)。
+
+要链接到[QtWidgets](https://doc.qt.io/qt-5.9/qtwidgets-module.html)库，请将以下内容添加到qmake项目文件中：
+
+```
+QT += widgets
+```
+
+创建实例[的QApplication](https://doc.qt.io/qt-5.9/qapplication.html)在`main()`：
+
+```c++
+#include <QApplication>
+#include <QQmlApplicationEngine>
+
+int main(int argc, char *argv[])
+{
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    return app.exec();
+}
+```
+
+**注意：** *Qt.labs模块中的类型不保证在将来的版本中保持兼容。*
+
+**See also** [FileDialog](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-filedialog.html) and [StandardPaths](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-standardpaths.html).
+
+## Property Documentation
+
+
+
+#### acceptLabel : string
+
+此属性保存接受对话框的按钮上显示的标签文本。
+
+设置为空字符串时，将使用基础平台的默认标签。默认标签通常是“ **打开”**。
+
+默认值为空字符串。
+
+**See also** [rejectLabel](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#rejectLabel-prop).
+
+
+
+#### currentFolder : [url](https://doc.qt.io/qt-5.9/qml-url.html)
+
+此属性保存对话框中当前选定的文件夹。
+
+与[文件夹](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#folder-prop)属性不同`currentFolder`，即使在最终选择之前，用户在对话框中选择文件夹时也会更新属性。
+
+**See also** [folder](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#folder-prop).
+
+
+
+#### folder : [url](https://doc.qt.io/qt-5.9/qml-url.html)
+
+此属性包含最终接受的文件夹。
+
+与[currentFolder](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#currentFolder-prop)属性不同，`folder`当用户在对话框中选择文件夹时，属性不会更新，但只有在最终选择完成后才会更新。也就是说，当用户单击“ **确定”**接受文件夹时。或者，可以处理[接受的()](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-dialog.html#accepted-signal)信号以获得最终选择。
+
+**See also** [currentFolder](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#currentFolder-prop) and [accepted()](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-dialog.html#accepted-signal).
+
+
+
+#### options : flags
+
+此属性包含影响对话框外观的各种选项。
+
+默认情况下，禁用所有选项。
+
+应在显示对话框之前设置选项。在对话框可见时设置它们不能保证立即对对话框产生影响（取决于选项和平台）。
+
+Available options:
+
+| Constant                           | Description                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `FolderDialog.ShowDirsOnly`        | 仅显示文件夹对话框中的目录。默认情况下，会显示文件夹和目录。 |
+| `FolderDialog.DontResolveSymlinks` | 不要在文件夹对话框中解析符号链接。默认情况下，符号链接已解析。 |
+| `FolderDialog.ReadOnly`            | 表示该对话框不允许创建目录。                                 |
+
+
+
+#### rejectLabel : string
+
+此属性保存拒绝对话框的按钮上显示的标签文本。
+
+设置为空字符串时，将使用基础平台的默认标签。默认标签通常为“ **取消”**。
+
+默认值为空字符串。
+
+**See also** [acceptLabel](https://doc.qt.io/qt-5.9/qml-qt-labs-platform-folderdialog.html#acceptLabel-prop).
